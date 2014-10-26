@@ -38,6 +38,15 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
       -- scrape the usernames and tags for later
       local f = assert(io.open(item_dir .. '/twitpic2-scrape-' .. escaped_item_name .. '.txt', 'a'))
 
+      local twitpic_id = string.match(url, "twitpic%.com/([a-z0-9]+)")
+      local timestamp = string.match(html, 'short_id.-"timestamp": ?"([^"]+)"')
+
+      f:write('timestamp:')
+      f:write(twitpic_id)
+      f:write(':')
+      f:write(timestamp)
+      f:write('\n')
+
       for username in string.gmatch(html, 'name="twitter:creator" value="([^"]+)"') do
         f:write('user:')
         f:write(username)
