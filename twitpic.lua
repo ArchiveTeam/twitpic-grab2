@@ -41,11 +41,13 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
       local twitpic_id = string.match(url, "twitpic%.com/([a-z0-9]+)")
       local timestamp = string.match(html, 'short_id.-"timestamp": ?"([^"]+)"')
 
-      f:write('timestamp:')
-      f:write(twitpic_id)
-      f:write(':')
-      f:write(timestamp)
-      f:write('\n')
+      if timestamp then
+        f:write('timestamp:')
+        f:write(twitpic_id)
+        f:write(':')
+        f:write(timestamp)
+        f:write('\n')
+      end
 
       for username in string.gmatch(html, 'name="twitter:creator" value="([^"]+)"') do
         f:write('user:')
