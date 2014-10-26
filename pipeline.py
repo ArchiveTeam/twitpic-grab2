@@ -68,7 +68,7 @@ USER_AGENTS = [
     'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36',
     ]
 TRACKER_ID = 'twitpic2'
-TRACKER_HOST = 'localhost:9080'
+TRACKER_HOST = 'tracker.archiveteam.org'
 
 ACCEPT_LANGUAGE_HEADERS = [
     "Accept-Language: en-CA,en;q=0.8,en-US;q=0.6,en-GB;q=0.4",
