@@ -97,7 +97,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
 
     tries = tries + 1
 
-    if tries >= 5 then
+    if tries >= 20 then
       tries = 0
       return wget.actions.NOTHING
     else
