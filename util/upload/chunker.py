@@ -68,9 +68,9 @@ for spec in sys.stdin:
 		candidates.sort(reverse=True)
 
 		if len(candidates) == 0:
-			current_group_dir = '%s/%s_%s' % (working_dir, group, int(time.time()))
+			current_group_dir = '%s/%s_%s' % (working_dir, group, time.strftime('%Y%m%d%H%M%S'))
 			os.makedirs(current_group_dir)
-			print('made new group %s' % current_group_dir)
+			print('made new group %s' % current_group_dir, file=sys.stderr)
 		else:
 			current_group_dir = '%s/%s' % (working_dir, candidates[0])
 
