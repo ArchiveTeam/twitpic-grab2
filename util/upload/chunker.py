@@ -86,6 +86,6 @@ for spec in sys.stdin:
 	current_group_size += (warcsize + textsize)
 
 	if current_group_size >= threshold:
-		print('group size is %s (>= %s), creating new group' % (current_group_size, threshold), file=sys.stderr)
+		print('%s size is %s (>= %s), creating new group' % (current_group_dir, current_group_size, threshold), file=sys.stderr)
 		os.rename(current_group_dir, '%s/%s' % (staging_dir, os.path.basename(current_group_dir)))
 		del current_group_dirs[group]
