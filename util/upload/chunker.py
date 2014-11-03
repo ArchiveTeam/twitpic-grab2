@@ -67,7 +67,7 @@ for spec in sys.stdin:
 		candidates = [d for d in os.listdir(working_dir) if group in d]
 		candidates.sort(reverse=True)
 
-		if candidates == None or len(candidates) == 0:
+		if len(candidates) == 0:
 			current_group_dir = '%s/%s_%s' % (working_dir, group, int(time.time()))
 			os.makedirs(current_group_dir)
 			print('made new group %s' % current_group_dir)
@@ -87,5 +87,4 @@ for spec in sys.stdin:
 
 	if current_group_size >= threshold:
 		print('group size is %s (>= %s), creating new group' % (current_group_size, threshold), file=sys.stderr)
-		current_group_dir = None
 		del current_group_dirs[group]
