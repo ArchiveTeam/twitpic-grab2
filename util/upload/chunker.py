@@ -7,8 +7,7 @@
 # and looks for the lexicographically highest directory starting with GROUP in
 # its working directory.  If it cannot find such a directory, creates one.
 # For each line in the input, moves WARCPATH and TEXTPATH to the directory
-# corresponding to GROUP.  /s in WARCPATH and TEXTPATH are added to their
-# respective filenames as _s.
+# corresponding to GROUP.
 # 
 # WARCPATH and TEXTPATH, if relative, are assumed relative to the current
 # directory.
