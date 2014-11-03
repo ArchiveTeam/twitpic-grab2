@@ -72,7 +72,7 @@ for spec in sys.stdin:
 			os.makedirs(current_group_dir)
 			print('made new group %s' % current_group_dir)
 		else:
-			current_group_dir = candidates[0]
+			current_group_dir = '%s/%s' % (working_dir, candidates[0])
 
 		current_group_size = dirsize(current_group_dir)
 		current_group_dirs[group] = current_group_dir
