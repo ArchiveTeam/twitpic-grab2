@@ -57,13 +57,15 @@ def dirsize(path):
 	return total
 
 current_group_dirs = dict()
+current_group_sizes = dict()
 
 for spec in sys.stdin:
 	warc, text, group = spec.rstrip().split('\t')
 
 	current_group_dir = current_group_dirs.get(group)
+	current_group_size = current_group_sizes.get(group)
 
-	if current_group_dir == None:
+	if current_group_dir == None or current_group_size == None:
 		candidates = [d for d in os.listdir(working_dir) if group in d]
 		candidates.sort(reverse=True)
 
@@ -76,6 +78,7 @@ for spec in sys.stdin:
 
 		current_group_size = dirsize(current_group_dir)
 		current_group_dirs[group] = current_group_dir
+		current_group_sizes[group] = current_group_size
 
 	warcsize = os.stat(warc).st_size
 	textsize = os.stat(text).st_size
@@ -84,8 +87,10 @@ for spec in sys.stdin:
 	os.rename(text, '%s/%s' % (current_group_dir, os.path.basename(text)))
 
 	current_group_size += (warcsize + textsize)
+	current_group_sizes[group] = current_group_size
 
 	if current_group_size >= threshold:
 		print('%s size is %s (>= %s), creating new group' % (current_group_dir, current_group_size, threshold), file=sys.stderr)
 		os.rename(current_group_dir, '%s/%s' % (staging_dir, os.path.basename(current_group_dir)))
 		del current_group_dirs[group]
+		del current_group_sizes[group]
