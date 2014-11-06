@@ -54,8 +54,11 @@ for entry in sys.stdin:
         tsm = re.match(ts_pattern, output)
 
         if tsm:
-            dt = datetime.strptime(tsm.group(1), '%Y-%m-%d %H:%M:%S')
-            print('%s\t%s\t%s' % (group.warc, group.datefile, dt.strftime('%b_%Y')))
+            try:
+                dt = datetime.strptime(tsm.group(1), '%Y-%m-%d %H:%M:%S')
+                print('%s\t%s\t%s' % (group.warc, group.datefile, dt.strftime('%b_%Y')))
+            except ValueError:
+                print('unable to parse %s as datetime (file: %s)' % (tsm.group(1), group.datefile), file=sys.stderr)
         else:
             print('unable to read date from %s' % group.datefile, file=sys.stderr)
         
