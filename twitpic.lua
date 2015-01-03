@@ -4,6 +4,7 @@ local item_type = os.getenv('item_type')
 local item_value = os.getenv('item_value')
 local escaped_item_name = os.getenv('escaped_item_name')
 local item_dir = os.getenv('item_dir')
+local got_initial_redirect = false
 
 
 read_file = function(file)
@@ -78,15 +79,20 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   io.stdout:write(url_count .. "=" .. status_code .. " " .. url["url"] .. ".  \n")
   io.stdout:flush()
 
+  -- handle the case where some shortcode is not valid, such as "swf" or "js"
+  if string.match(url["path"], "[a-zA-Z0-9]+$") and status_code == 301 then
+    got_initial_redirect = true
+  end
+
   -- consider 403 as banned from twitpic, not pernament failure
   if status_code >= 500 or
           (status_code >= 400 and status_code ~= 404 and status_code ~= 403) or
-          (status_code == 403 and string.match(url["host"], "twitpic%.com")) then
+          (status_code == 403 and string.match(url["host"], "twitpic%.com") and not got_initial_redirect) then
 
     io.stdout:write("\nServer returned "..http_stat.statcode.." for " .. url["url"] .. ". Sleeping.\n")
     io.stdout:flush()
 
-    if string.match(url["host"], "twitpic%.com") and status_code == 403 then
+    if string.match(url["host"], "twitpic%.com") and status_code == 403 and not got_initial_redirect then
       io.stdout:write("\nBanned from TwitPic :(\n")
       io.stdout:flush()
       os.execute("sleep 60")
@@ -106,6 +112,9 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   end
 
   tries = 0
+  if string.match(url["path"], "[a-zA-Z0-9]+/$") then
+    got_initial_redirect = false
+  end
 
   -- We're okay; sleep a bit (if we have to) and continue
   -- local sleep_time = 0.1 * (math.random(1000, 2000) / 100.0)
