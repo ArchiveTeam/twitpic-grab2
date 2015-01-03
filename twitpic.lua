@@ -87,7 +87,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   -- consider 403 as banned from twitpic, not pernament failure
   if status_code >= 500 or
           (status_code >= 400 and status_code ~= 404 and status_code ~= 403) or
-          (status_code == 403 and string.match(url["host"], "twitpic%.com") and not got_initial_redirect) then
+          (status_code == 403 and string.match(url["host"], "twitpic%.com") and not got_initial_redirect and not url["path"] == "ping") then
 
     io.stdout:write("\nServer returned "..http_stat.statcode.." for " .. url["url"] .. ". Sleeping.\n")
     io.stdout:flush()
